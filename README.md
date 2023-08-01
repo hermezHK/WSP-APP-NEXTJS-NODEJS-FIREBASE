@@ -1,1 +1,1 @@
-# nextjs-whatsapp-clone-starter
+# wsp - clone  :hotsprings:
