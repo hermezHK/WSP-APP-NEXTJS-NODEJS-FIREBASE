@@ -10,6 +10,10 @@ function ContextMenu({ options, cordinates, ContextMenu, setContextMenu }) {
           setContextMenu(false);
         }
       }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
     }
   },[]);
 
@@ -17,7 +21,7 @@ function ContextMenu({ options, cordinates, ContextMenu, setContextMenu }) {
     e.stopPropagation();
     setContextMenu(false);
     callback();
-  }
+  };
 
   return (
     <div
