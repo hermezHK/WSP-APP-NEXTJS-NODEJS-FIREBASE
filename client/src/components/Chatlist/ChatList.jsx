@@ -12,7 +12,7 @@ function ChatList() {
         <List />
       </>
     </div>
-    );
+  );
 }
 
 export default ChatList;
