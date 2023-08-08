@@ -4,8 +4,7 @@ import { FaCamera } from "react-icons/fa";
 import ContextMenu from "./ContextMenu";
 import PhotoPicker from "./PhotoPicker";
 import PhotoLibrary from "./PhotoLibrary";
- 
-
+import CapturePhoto from "./CapturePhoto";
 
 function Avatar({ type, image, setImage }) {
   const [hover, setHover] = useState(false);
@@ -17,6 +16,8 @@ function Avatar({ type, image, setImage }) {
 
   const [grabPhoto, setGrabPhoto] = useState(false);
   const [showPhotoLibrary, setShowPhotoLibrary] = useState(false);
+  const [showCapturePhoto, setShowCapturePhoto] = useState(false);
+
   const showContextMenu = (e) => {
     e.preventDefault();
     setContextMenuCordinates({ x: e.pageX, y: e.pageY });
@@ -24,7 +25,7 @@ function Avatar({ type, image, setImage }) {
   };
 
   useEffect(() => {
-    if(grabPhoto) {
+    if (grabPhoto) {
       const data = document.getElementById("photo-picker");
       data.click();
       document.body.onfocus = (e) => {
@@ -33,14 +34,21 @@ function Avatar({ type, image, setImage }) {
         }, 1000);
       };
     }
-  },[grabPhoto]);
-
+  }, [grabPhoto]);
 
   const contextMenuOptions = [
-    { name: "Take Photo", callback: () => {} },
-    { name: "Choose From Library", callback: () => {
-      setShowPhotoLibrary(true);
-    } },
+    {
+      name: "Take Photo",
+      callback: () => {
+        setShowCapturePhoto(true);
+      },
+    },
+    {
+      name: "Choose From Library",
+      callback: () => {
+        setShowPhotoLibrary(true);
+      },
+    },
     {
       name: "Upload Photo",
       callback: () => {
@@ -58,10 +66,10 @@ function Avatar({ type, image, setImage }) {
   const PhotoPickerChange = async (e) => {
     console.log(e);
     const file = e.target.files[0];
-    console.log({file});
+    console.log({ file });
     const reader = new FileReader();
     const data = document.createElement("img");
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       data.src = event.target.result;
       data.setAttribute("data-src", event.target.result);
     };
@@ -120,10 +128,13 @@ function Avatar({ type, image, setImage }) {
           setContextMenu={setIsContextMenuVisible}
         />
       )}
-      {showPhotoLibrary && ( 
-        <PhotoLibrary 
-          setImage={setImage} 
-          hidePhotoLibrary={setShowPhotoLibrary} 
+      {showCapturePhoto && (
+        <CapturePhoto setImage={setImage} hide={setShowCapturePhoto} />
+      )}
+      {showPhotoLibrary && (
+        <PhotoLibrary
+          setImage={setImage}
+          hidePhotoLibrary={setShowPhotoLibrary}
         />
       )}
       {grabPhoto && <PhotoPicker onChange={PhotoPickerChange} />}
@@ -131,7 +142,3 @@ function Avatar({ type, image, setImage }) {
   );
 }
 export default Avatar;
-
-
-
-

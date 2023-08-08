@@ -2,7 +2,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { firebaseAuth } from "@/utils/FirebaseConfig";
 
 import axios from 'axios';
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FcGoogle } from "react-icons/fc";
@@ -20,7 +20,11 @@ function login() {
   const router = useRouter();
 
   //set user state in reducer
-  const [{ }, dispatch] = useStateProvider();
+  const [{ userInfo, newUser }, dispatch] = useStateProvider();
+
+  useEffect(() =>  {
+    if(userInfo?.id && !newUser) router.push("/");
+  },[userInfo, newUser]);
 
 
   const handleLogin = async () => {
@@ -45,8 +49,20 @@ function login() {
             },
           });
           router.push("/onboarding");
+        } else {
+          const {id, name, email, profilePicture:profileImage, status } = data;
+          dispatch({
+            type: reducerCases.SET_USER_INFO, 
+            userInfo: {
+              id,
+              name,
+              email,
+              profileImage,
+              status
+            },
+          });
+          router.push("/");
         }
-
       }
     } catch (error) {
       console.log(error);
