@@ -12,12 +12,15 @@ function ChatListHeader() {
         <Avatar type="sm" image={userInfo?.profileImage} />
       </div>
       <div className="flex gap-6">
-        <BsFillChatLeftTextFill 
-        className="text-panel-header-icon curso-pointer text-xl" 
-        title="New Chat"/>
+        <BsFillChatLeftTextFill
+          className="text-panel-header-icon curso-pointer text-xl"
+          title="New Chat"
+        />
         <>
-          <BsThreeDotsVertical className="text-panel-header-icon cursor-pointer text-xl" 
-          title="Menu"/>
+          <BsThreeDotsVertical
+            className="text-panel-header-icon cursor-pointer text-xl"
+            title="Menu"
+          />
         </>
       </div>
     </div>
