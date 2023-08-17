@@ -24,5 +24,8 @@
     "wavesurfer.js": "^6.6.3",
     "yarn": "^1.22.19",
     "zego-express-engine-webrtc": "2.24.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.20"
   }
 }

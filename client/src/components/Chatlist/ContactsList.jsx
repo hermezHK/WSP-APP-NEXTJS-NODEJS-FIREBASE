@@ -56,19 +56,19 @@ function ContactsList() {
           return (
             <div key={Date.now() + initialLetter}>
               <div className="text-teal-light pl-10 py-5">{initialLetter}</div>
-              {userList.map((contact) => {
+              {
+              userList.map((contact) => {
                 return ( 
                   <ChatLIstItem 
                     data={contact} 
                     isContactPage={true} 
                     key={contact.id}
-                  />
-                );
-              })}
+                  />);
+                })
+              }
             </div>
           );
         })}
-        ;
       </div>
     </div>
   );
