@@ -11,7 +11,11 @@ import { ImAttachment } from "react-icons/im";
 import { useStateProvider } from "@/context/StateContext";
 import { ADD_IMAGE_MESSAGE_ROUTE, ADD_MESSAGE_ROUTE } from "@/utils/ApiRoutes";
 import { reducerCases } from "@/context/constants";
-import CaptureAudio from "../common/CaptureAudio";
+import dynamic from "next/dynamic";
+
+const CaptureAudio = dynamic(() => import("../common/CaptureAudio"), {
+  ssr: false,
+});
 
 function MessageBar() {
   const [{ userInfo, currentChatUser, socket }, dispatch] = useStateProvider();

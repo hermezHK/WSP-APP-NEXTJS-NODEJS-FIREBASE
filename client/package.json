@@ -12,6 +12,7 @@
     "autoprefixer": "^10.4.14",
     "axios": "^1.4.0",
     "emoji-picker-react": "^4.4.9",
+    "extendable-media-recorder": "^8.1.0",
     "firebase": "^9.21.0",
     "next": "13.4.1",
     "postcss": "^8.4.23",
