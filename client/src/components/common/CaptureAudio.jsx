@@ -152,7 +152,6 @@ function CaptureAudio({ hide }) {
 
 
   const sendRecording = async () => {
-    alert("send")
     try {
       const formData = new FormData();
       formData.append("audio", renderedAudio);
