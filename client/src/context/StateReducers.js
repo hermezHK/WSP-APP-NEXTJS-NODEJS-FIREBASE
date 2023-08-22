@@ -10,7 +10,8 @@ export const initialState = {
     socket: undefined,
     messagesSearch: false,
     userContacts: [],
-    onlineUsers: []
+    onlineUsers: [],
+    filteredContacts: []
 };
 
 const reducer = (state, action) => {
@@ -43,7 +44,7 @@ const reducer = (state, action) => {
                 ...state,
                 messages: action.messages,
             };
-        
+
         case reducerCases.SET_SOCKET:
             return {
                 ...state,
@@ -52,7 +53,7 @@ const reducer = (state, action) => {
         case reducerCases.ADD_MESSAGE:
             return {
                 ...state,
-                messages: [ ...state.messages, action.newMessage],
+                messages: [...state.messages, action.newMessage],
             };
         case reducerCases.SET_MESSAGE_SEARCH:
             return {
@@ -64,11 +65,21 @@ const reducer = (state, action) => {
                 ...state,
                 userContacts: action.userContacts,
             }
-        case reducerCases.SET_ONLINE_USERS:           
+        case reducerCases.SET_ONLINE_USERS:
             return {
                 ...state,
                 onlineUsers: action.onlineUsers,
             };
+        case reducerCases.SET_CONTACT_SEARCH: {
+            const filteredContacts = state.userContacts.filter((contact) =>
+                contact.name.toLowerCase().includes(action.contactSearch.toLowerCase())
+            );
+            return {
+                ...state,
+                contactSearch: action.contactSearch,
+                filteredContacts,
+            };
+        }
         default:
             return state;
     }
