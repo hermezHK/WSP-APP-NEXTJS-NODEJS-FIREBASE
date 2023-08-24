@@ -1,18 +1,18 @@
 import { useStateProvider } from "@/context/StateContext";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
-const Container = dynamic(() => import("./Container"), { ssr: false})
+const Container = dynamic(() => import("./Container"), { ssr: false });
 
 function VoiceCall() {
-  const[{ voiceCall, socket, userInfo }] = useStateProvider();
+  const [{ voiceCall, socket, userInfo }] = useStateProvider();
 
   useEffect(() => {
-    if(voiceCall.type === "out-going") {
+    if (voiceCall.type === "out-going") {
       socket.current.emit("outgoing-voice-call", {
         to: voiceCall.id,
         from: {
           id: userInfo.id,
-          profilePicture: userInfo.profilePicture,
+          profilePicture: userInfo.profileImage,
           name: userInfo.name,
         },
         callType: voiceCall.callType,
@@ -21,7 +21,7 @@ function VoiceCall() {
     }
   }, [voiceCall]);
 
-  return <Container data={voiceCall} />
+  return <Container data={voiceCall} />;
 }
 
 export default VoiceCall;
