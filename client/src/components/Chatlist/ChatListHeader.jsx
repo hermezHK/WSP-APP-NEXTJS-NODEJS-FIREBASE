@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "../common/Avatar";
 import { useStateProvider } from "@/context/StateContext";
 import { BsFillChatLeftTextFill, BsThreeDotsVertical } from "react-icons/bs";
 import { reducerCases } from "@/context/constants";
+import ContextMenu from "../common/ContextMenu";
+import { useRouter } from "next/router";
 
 function ChatListHeader() {
   const [{ userInfo }, dispatch] = useStateProvider();
+
+    //logout
+  const router = useRouter()
+  const [contextMenuCordinates, setContextMenuCordinates] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
+
+  const showContextMenu = (e) => {
+    e.preventDefault();
+    setContextMenuCordinates({ x: e.pageX, y: e.pageY });
+    setIsContextMenuVisible(true);
+  };
+
+  const contextMenuOptions = [
+    {
+      name: "Logout",
+      callback: async () => {
+        setIsContextMenuVisible(false);
+        router.push("/logout");
+      },
+    },
+  ];
+
   const handleAllContactsPage = () => {
     dispatch({ type: reducerCases.SET_ALL_CONTACTS_PAGE });
   };
@@ -25,7 +52,17 @@ function ChatListHeader() {
           <BsThreeDotsVertical
             className="text-panel-header-icon cursor-pointer text-xl"
             title="Menu"
+            onClick={(e) => showContextMenu(e)}
+            id="context-opener"
           />
+          {isContextMenuVisible && (
+            <ContextMenu
+              options={contextMenuOptions}
+              cordinates={contextMenuCordinates}
+              contextMenu={isContextMenuVisible}
+              setContextMenu={setIsContextMenuVisible}
+            />
+          )}
         </>
       </div>
     </div>
