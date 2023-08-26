@@ -19,7 +19,7 @@ function Container({ data }) {
       socket.current.on("accept-call", () => setCallAccepted(true));
     else {
       setTimeout(() => {
-        setCallAccepted;
+        setCallAccepted(true);
       }, 1000);
     }
   }, [data]);
@@ -29,7 +29,7 @@ function Container({ data }) {
       try {
         const {
           data: { token: returnedToken },
-        } = axios.get(`${GET_CALL_TOKEN}/${userInfo.id}`);
+        } = await axios.get(`${GET_CALL_TOKEN}/${userInfo.id}`);
         setToken(returnedToken);
       } catch (error) {
         console.log(error);
@@ -43,7 +43,7 @@ function Container({ data }) {
       import("zego-express-engine-webrtc").then(
         async ({ ZegoExpressEngine }) => {
           const zg = new ZegoExpressEngine(
-            process.env.NEXT_PUBLIC_ZEG_APP_ID,
+            process.env.NEXT_PUBLIC_ZEGO_APP_ID,
             process.env.NEXT_PUBLIC_ZEGO_SERVER_ID
           );
           setZgVar(zg);
@@ -83,7 +83,7 @@ function Container({ data }) {
           await zg.loginRoom(
             data.roomId.toString(),
             token,
-            { userId: userInfo.id.toString(), userName: userInfo.name },
+            { userID: userInfo.id.toString(), userName: userInfo.name },
             { userUpdate: true }
           );
 
@@ -107,7 +107,7 @@ function Container({ data }) {
           localVideo.appendChild(videoElement);
           const td = document.getElementById("video-local-zego");
           td.srcObject = localStream;
-          const streamID = '123' + Date.now();
+          const streamID = "123" + Date.now();
           setPublishStream(streamID);
           setLocalStream(localStream);
           zg.startPublishingStream(streamID, localStream);
@@ -121,15 +121,15 @@ function Container({ data }) {
 
   const endCall = () => {
     const id = data.id;
+    if(zgVar && localStream && publishStream) {
+      zgVar.destroyStream(localStream);
+      zgVar.stopPublishingStream(publishStream);
+      zgVar.logoutRoom(data.roomId.toString());
+    }
     if (data.callType === "voice") {
       socket.current.emit("reject-voice-call", {
         from: id,
       });
-      if(zgVar && localStream && publishStream) {
-        zgVar.destroyStream(localStream);
-        zgVar.stopPublishingStream(publishStream);
-        zgVar.logoutRoom(data.roomId.toString());
-      }
     } else {
       socket.current.emit("reject-video-call", {
         from: id,
